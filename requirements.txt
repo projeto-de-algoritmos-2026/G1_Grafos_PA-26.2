@@ -1,0 +1,4 @@
+networkx==3.4.2
+matplotlib==3.9.4
+pytest==9.1.1
+osmnx==2.0.7
