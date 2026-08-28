@@ -54,6 +54,32 @@ pip install -r requirements.txt
 pytest tests/ -v
 ```
 
+## Mapa real com OSMnx
+
+O modulo `src/dados_reais.py` baixa uma area pequena real da Asa Norte, em
+Brasilia, converte o grafo do OpenStreetMap para a classe `Grafo` do projeto e
+encontra os nos mais proximos da loja/clientes escolhidos.
+
+Area escolhida: CLN/SQN 204-205, Asa Norte, Brasilia.
+
+- Loja - CLN 204: `lat=-15.76598`, `lon=-47.88518`
+- Cliente 1 - SQN 204: `lat=-15.76495`, `lon=-47.88653`
+- Cliente 2 - SQN 205: `lat=-15.76522`, `lon=-47.88376`
+- Cliente 3 - CLN 205: `lat=-15.76632`, `lon=-47.88418`
+
+Testes rapidos, sem internet:
+
+```bash
+pytest tests/test_dados_reais.py -v
+```
+
+Teste real, usando internet/OpenStreetMap:
+
+```bash
+$env:RUN_OSMNX_REAL = "1"
+pytest tests/test_dados_reais_download.py -v
+```
+
 ## Cronograma
 
 O plano de commits detalhado está em [docs/cronograma_v1.md](docs/cronograma_v1.md).
