@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-# garante que src/ esteja no path, não importa de onde o arquivo é executado
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from grafo import Grafo
