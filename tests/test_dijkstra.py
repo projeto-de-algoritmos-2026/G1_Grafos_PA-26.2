@@ -4,14 +4,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from grafo import Grafo
-from dijkstra import dijkstra
+from dijkstra import dijkstra, dijkstra_com_caminho, reconstruir_caminho
 
 
 def test_caminho_direto():
     g = Grafo()
     g.adicionar_aresta("A", "B", 5)
-    dist = dijkstra(g, "A")
+    dist, pred = dijkstra_com_caminho(g, "A")
     assert dist["B"] == 5
+    assert reconstruir_caminho(pred, "A", "B") == ["A", "B"]
 
 
 def test_caminho_com_atalho():
@@ -19,16 +20,18 @@ def test_caminho_com_atalho():
     g.adicionar_aresta("A", "B", 10)
     g.adicionar_aresta("A", "C", 2)
     g.adicionar_aresta("C", "B", 2)
-    dist = dijkstra(g, "A")
+    dist, pred = dijkstra_com_caminho(g, "A")
     assert dist["B"] == 4
+    assert reconstruir_caminho(pred, "A", "B") == ["A", "C", "B"]
 
 
 def test_no_desconectado():
     g = Grafo()
     g.adicionar_no("A")
     g.adicionar_no("Ilha")
-    dist = dijkstra(g, "A")
+    dist, pred = dijkstra_com_caminho(g, "A")
     assert dist["Ilha"] == float("inf")
+    assert reconstruir_caminho(pred, "A", "Ilha") is None
 
 
 def test_mapa_ficticio_distancias_dos_clientes():
