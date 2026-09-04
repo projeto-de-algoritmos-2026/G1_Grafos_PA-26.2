@@ -45,8 +45,14 @@ pip install -r requirements.txt
 ## Como rodar
 
 ```bash
-
+python src/main.py
+python src/main.py real
+python src/main.py todos
 ```
+
+Por padrão, `python src/main.py` gera o mapa fictício. O modo `real` baixa o
+mapa do OpenStreetMap e gera uma rota real para cada cliente cadastrado em
+`src/dados_reais.py`. O modo `todos` gera as duas versões.
 
 ## Como rodar os testes
 
@@ -60,12 +66,15 @@ O modulo `src/dados_reais.py` baixa uma area pequena real da Asa Norte, em
 Brasilia, converte o grafo do OpenStreetMap para a classe `Grafo` do projeto e
 encontra os nos mais proximos da loja/clientes escolhidos.
 
-Area escolhida: CLN/SQN 204-205, Asa Norte, Brasilia.
+Area escolhida: CLN/SQN 203-206, Asa Norte, Brasilia.
 
 - Loja - CLN 204: `lat=-15.76598`, `lon=-47.88518`
 - Cliente 1 - SQN 204: `lat=-15.76495`, `lon=-47.88653`
 - Cliente 2 - SQN 205: `lat=-15.76522`, `lon=-47.88376`
-- Cliente 3 - CLN 205: `lat=-15.76632`, `lon=-47.88418`
+- Cliente 3 - CLN 205 Sul: `lat=-15.76690`, `lon=-47.88345`
+- Cliente 4 - SQN 203: `lat=-15.76306`, `lon=-47.88835`
+- Cliente 5 - SQN 206: `lat=-15.76673`, `lon=-47.88198`
+- Cliente 6 - W3 Norte: `lat=-15.76772`, `lon=-47.88774`
 
 Testes rapidos, sem internet:
 

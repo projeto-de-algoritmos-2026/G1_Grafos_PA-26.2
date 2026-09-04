@@ -18,16 +18,19 @@ class PontoEntrega:
     lon: float
 
 
-# Area pequena em Brasilia, perto da CLN/SQN 204-205, Asa Norte.
+# Area em Brasilia, perto da CLN/SQN 203-206, Asa Norte.
 # Formato do bbox no OSMnx 2.x: (lon_min, lat_min, lon_max, lat_max).
 AREA_PADRAO = {
-    "nome": "CLN/SQN 204-205, Asa Norte, Brasilia",
-    "bbox": (-47.88770, -15.76685, -47.88295, -15.76305),
+    "nome": "CLN/SQN 203-206, Asa Norte, Brasilia",
+    "bbox": (-47.88970, -15.76835, -47.88080, -15.76135),
     "loja": PontoEntrega("Loja - CLN 204", -15.76598, -47.88518),
     "clientes": [
         PontoEntrega("Cliente 1 - SQN 204", -15.76495, -47.88653),
         PontoEntrega("Cliente 2 - SQN 205", -15.76522, -47.88376),
-        PontoEntrega("Cliente 3 - CLN 205", -15.76632, -47.88418),
+        PontoEntrega("Cliente 3 - CLN 205 Sul", -15.76690, -47.88345),
+        PontoEntrega("Cliente 4 - SQN 203", -15.76306, -47.88835),
+        PontoEntrega("Cliente 5 - SQN 206", -15.76673, -47.88198),
+        PontoEntrega("Cliente 6 - W3 Norte", -15.76772, -47.88774),
     ],
 }
 

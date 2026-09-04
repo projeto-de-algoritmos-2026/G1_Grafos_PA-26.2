@@ -1,12 +1,15 @@
-"""Gera as imagens do mapa fictício com a rota da loja até cada cliente."""
+"""Gera imagens de rotas para o mapa fictício e para o mapa real."""
 
 from __future__ import annotations
 
+import argparse
 import os
+import re
 
 import matplotlib.pyplot as plt
 import networkx as nx
 
+from dados_reais import baixar_grafo_real, converter_para_grafo, pontos_padrao_com_nos
 from dados_ficticios import coordenadas, montar_grafo_bairro
 from dijkstra import dijkstra_com_caminho, reconstruir_caminho
 
@@ -102,5 +105,82 @@ def rodar_mapa_ficticio():
         desenhar_ficticio(grafo, coordenadas, caminho, cliente)
 
 
+def _nome_arquivo(texto: str) -> str:
+    texto = texto.lower()
+    texto = re.sub(r"[^a-z0-9]+", "_", texto)
+    return texto.strip("_")
+
+
+def rodar_mapa_real(pasta="relatorio"):
+    """Baixa o mapa real e salva uma rota da loja até cada cliente real."""
+    import osmnx as ox
+
+    G_osmnx = baixar_grafo_real()
+    grafo = converter_para_grafo(G_osmnx)
+    pontos = pontos_padrao_com_nos(G_osmnx)
+
+    no_loja = pontos["loja"]["no"]
+    dist, pred = dijkstra_com_caminho(grafo, no_loja)
+
+    os.makedirs(pasta, exist_ok=True)
+
+    print(f"Area real: {pontos['area']}")
+    print(f"Origem: {pontos['loja']['nome']} (no {no_loja})")
+
+    for i, cliente in enumerate(pontos["clientes"], start=1):
+        no_cliente = cliente["no"]
+        rota = reconstruir_caminho(pred, no_loja, no_cliente)
+
+        if rota is None:
+            print(f"{cliente['nome']}: sem caminho a partir da loja")
+            continue
+
+        nome_saida = f"rota_real_{i}_{_nome_arquivo(cliente['nome'])}.png"
+        caminho_saida = os.path.join(pasta, nome_saida)
+
+        print(
+            f"{cliente['nome']} (no {no_cliente}): "
+            f"distância real = {dist[no_cliente]:.0f} metros"
+        )
+
+        ox.plot_graph_route(
+            G_osmnx,
+            rota,
+            route_color="red",
+            route_linewidth=4,
+            save=True,
+            filepath=caminho_saida,
+            close=True,
+        )
+
+        if i == 1:
+            ox.plot_graph_route(
+                G_osmnx,
+                rota,
+                route_color="red",
+                route_linewidth=4,
+                save=True,
+                filepath=os.path.join(pasta, "rota_real.png"),
+                close=True,
+            )
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Gera mapas de rotas do projeto.")
+    parser.add_argument(
+        "modo",
+        choices=["ficticio", "real", "todos"],
+        nargs="?",
+        default="ficticio",
+        help="Tipo de mapa a gerar. Padrao: ficticio.",
+    )
+    args = parser.parse_args()
+
+    if args.modo in ["ficticio", "todos"]:
+        rodar_mapa_ficticio()
+    if args.modo in ["real", "todos"]:
+        rodar_mapa_real()
+
+
 if __name__ == "__main__":
-    rodar_mapa_ficticio()
+    main()

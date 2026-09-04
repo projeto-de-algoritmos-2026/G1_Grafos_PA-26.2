@@ -78,10 +78,10 @@ def test_escolher_no_mais_proximo_tem_fallback_sem_scikit_learn(monkeypatch):
 
 def test_area_padrao_tem_loja_e_clientes():
     assert dados_reais.AREA_PADRAO["bbox"] == (
-        -47.88770,
-        -15.76685,
-        -47.88295,
-        -15.76305,
+        -47.88970,
+        -15.76835,
+        -47.88080,
+        -15.76135,
     )
     assert dados_reais.AREA_PADRAO["loja"].nome.startswith("Loja")
-    assert len(dados_reais.AREA_PADRAO["clientes"]) >= 3
+    assert len(dados_reais.AREA_PADRAO["clientes"]) >= 6
